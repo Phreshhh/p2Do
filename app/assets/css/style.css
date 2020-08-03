@@ -1,0 +1,14 @@
+:root {
+  --appcolor: #b8e69f;
+  --apphighlight: rgb(77, 76, 76);
+}
+#main-nav {background-color:rgb(236, 236, 236);}
+#scrollToTop {position:fixed;right:10px;bottom:60px;}
+input[type="text"] {border:none;}
+input[type="text"]:focus {border:none;border-bottom:1px solid #32d296;}
+.clickable {cursor:pointer;}
+.priopoint {width:1px;height:20px;cursor:pointer;}
+.todo-reminder-icon {width:20px;height:20px;cursor:pointer;}
+.todo-reminder-on {color:red;}
+#todo-reminder-input,
+#add-new-todo-input {border:none;border-bottom:1px solid #b5abab;}

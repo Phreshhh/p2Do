@@ -1,0 +1,36 @@
+{
+  "settings": "Beállítások",
+  "language": "Nyelv",
+  "language_hu": "Magyar",
+  "language_en": "English",
+  "database": "Adatbázis",
+  "save_place": "Mentés helye",
+  "import": "Importálás",
+  "export": "Exportálás",
+  "start_with_system": "Indulás a rendszerrel",
+  "date_and_time": "Dátum & idő",
+  "info": "Infó",
+  "save": "Mentés",
+  "saved": "Mentve",
+  "cancel": "Mégse",
+  "close": "Bezár",
+  "total": "Összesen",
+
+  "add": "Hozzáadás",
+  "update": "Frissítés",
+  "edit": "Szerkesztés",
+  "delete": "Törlés",
+  "deleted": "Törölve",
+  "finished": "Kész",
+  "file_not_saved": "Fájl mentés sikertelen",
+  "file_save_failed": "Váratlan hiba a fájl mentés közben. Hiba: ",
+
+  "new_todo": "Új teendő",
+  "todos": "Teendők",
+  "priority": "Prioritás",
+  "low": "Kicsi",
+  "medium": "Közepes",
+  "high": "Magas",
+  "reminder": "Emlékeztető"
+
+}

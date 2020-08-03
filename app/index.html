@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>p2Do</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../build/icons/favicon.ico" />
+    <link rel="stylesheet" href="assets/css/uikit.min.css" />
+    <link rel="stylesheet" href="assets/css/chrome.custom.scrollbar.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script>const i18n = new(require('../locales/i18n'));</script>
+  </head>
+  <body>
+
+    <nav id="main-nav" class="uk-navbar-container uk-margin" uk-navbar uk-sticky>
+      <div class="uk-navbar-center">
+        <div class="uk-navbar-center-left">
+          <div>
+            <ul class="uk-navbar-nav">
+              <li><a id="dateTimeHolder" style="cursor:default;">&nbsp;</a></li>
+            </ul>
+          </div>
+        </div>
+        <a class="uk-navbar-item uk-logo" href=""><img src="assets/img/p2do-icon-48.png" /></a>
+        <div class="uk-navbar-center-right">
+          <div>
+            <ul class="uk-navbar-nav">
+              <li>
+                <a uk-icon="cog"> <script>document.write(i18n.__('settings'));</script> </a>
+                <div class="uk-navbar-dropdown">
+                  <ul class="uk-nav uk-navbar-dropdown-nav">
+                    <li class="uk-nav-header"><script>document.write(i18n.__('language'));</script></li>
+                    <li id="language-en-menu-li"><a onclick="setLang('en');"><script>document.write(i18n.__('language_en'));</script></a></li>
+                    <li id="language-hu-menu-li"><a onclick="setLang('hu');"><script>document.write(i18n.__('language_hu'));</script></a></li id="language-en-menu-li">
+                    <li class="uk-nav-divider"></li>
+                    <li class="uk-nav-header">App</li>
+                    <li id="autostartapp-menu-li"><a onclick="autostartApp();"><script>document.write(i18n.__('start_with_system'));</script></a></li>
+                    <li id="clock-menu-li"><a onclick="toggelShowClock();"><script>document.write(i18n.__('date_and_time'));</script> </a></li id="autostartapp-li">
+                    <li class="uk-nav-divider"></li>
+                    <li class="uk-nav-header"><script>document.write(i18n.__('info'));</script></li>
+                    <li><a onclick="openExternallink('app');">p2Do</a></li>
+                    <li><a onclick="openExternallink('phreshistant');">Phreshistant</a></li>
+                    <li><a onclick="openExternallink('phreshit');">Phresh-IT</a></li>
+                    <li><a onclick="openExternallink('electron');">Electron</a></li>
+                    <li><a onclick="openExternallink('uikit');">UIkit</a></li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content -->
+    <div class="uk-container">
+
+      <table id="todos-table" class="uk-table uk-table-justify uk-table-divider uk-margin-top">
+        <!-- <caption>p2Dos</caption> -->
+        <thead>
+          <tr>
+            <th class="uk-table-expand uk-text-center">
+              <script>document.write(i18n.__('todos'));</script>
+            </th>
+            <th class="uk-table-shrink">&nbsp;</th>
+            <th class="uk-table-shrink">&nbsp;</th>
+            <th class="uk-table-shrink"><a uk-icon="plus" href="#add-new-todo-modal" uk-toggle></a></th>
+          </tr>
+        </thead>
+        <tbody id="todos-table-body">
+          <!-- fill from db -->
+        </tbody>
+      </table>
+
+      <a id="scrollToTop" class="uk-text-primary uk-background-muted uk-padding-small uk-border-rounded" href="#" style="display:none;" uk-totop uk-scroll></a>
+    <!-- content END -->
+    </div>
+
+    <!-- Modals -->
+
+    <!-- todo -->
+    <div id="add-new-todo-modal" class="uk-modal-container" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body" uk-overflow-auto>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 class="uk-modal-title"><script>document.write(i18n.__('new_todo'));</script></h2>
+        <form class="uk-grid-small" uk-grid>
+          <div class="uk-width-1-1@s">
+            <input id="add-new-todo-input" class="uk-input uk-form-small" type="text">
+          </div>
+          <div class="uk-width-1-1@s">
+            <select id="add-new-todo-priority" class="uk-select">
+              <option value="3"><script>document.write(i18n.__('high'));</script></option>
+              <option value="2" selected="selected"><script>document.write(i18n.__('medium'));</script></option>
+              <option value="1"><script>document.write(i18n.__('low'));</script></option>
+            </select>
+          </div>
+          <div class="uk-width-1-2@s">
+            <input id="add-new-todo-reminder-date" type="date" class="uk-input">
+            <input id="add-new-todo-reminder-time" type="time" class="uk-input">
+          </div>
+        </form>
+        <p class="uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button"><script>document.write(i18n.__('cancel'));</script></button>
+          <button class="uk-button uk-button-primary" type="button" onclick="p2DoJS.saveFullTodo();"><script>document.write(i18n.__('save'));</script></button>
+        </p>
+      </div>
+    </div>
+
+    <!-- db -->
+    <div id="set-workspace-db-modal" class="uk-modal-container" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body" uk-overflow-auto>
+        <h2 class="uk-modal-title"><script>document.write(i18n.__('save_place'));</script></h2>
+        <form class="uk-grid-small" uk-grid>
+          <div class="uk-width-1-1@s">
+            <input id="workspacePathInput" class="uk-input uk-form-small" type="text" onclick="createWorkspaceDialog();">
+          </div>
+        </form>
+        <p class="uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button"><script>document.write(i18n.__('cancel'));</script></button>
+          <button class="uk-button uk-button-primary" type="button" onclick="createWorkspaceDialog();"><script>document.write(i18n.__('save'));</script></button>
+        </p>
+      </div>
+    </div>
+
+    <div id="reset-workspace-db-modal" class="uk-modal-container" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body" uk-overflow-auto>
+        <h2 class="uk-modal-title"><script>document.write(i18n.__('save_place'));</script></h2>
+        <form class="uk-grid-small" uk-grid>
+          <div class="uk-width-1-1@s">
+            <input id="newWorkspacePathInput" class="uk-input uk-form-small" type="text" onclick="createWorkspaceDialog();">
+          </div>
+        </form>
+        <p class="uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button"><script>document.write(i18n.__('cancel'));</script></button>
+          <button class="uk-button uk-button-primary" type="button" onclick="editWorkspaceDialog();"><script>document.write(i18n.__('save'));</script></button>
+        </p>
+      </div>
+    </div>
+
+    <script src="assets/js/uikit.min.js"></script>
+    <script src="assets/js/uikit-icons.min.js"></script>
+    <script>
+
+      let i;
+      let todosDB, p2DoJS;
+      let settedReminders = [];
+
+      setInterval( () => {
+        /* Clock */
+        let datetimeTotitle = dateTimeFormat(new Date());
+        document.getElementById('dateTimeHolder').innerHTML = datetimeTotitle;
+        /* Reminders */
+        checkReminders();
+      }, 1000);
+
+      function dateTimeFormat(datetime) {
+        let newDatetime = datetime.toLocaleString();
+        newDatetime = newDatetime.replace('. ', '.');
+        newDatetime = newDatetime.replace('. ', '.');
+        newDatetime = newDatetime.replace('. ', ' - ');
+        return newDatetime;
+      }
+
+      function openExternallink(gotohomepage) {
+        switch (gotohomepage) {
+          case 'app':
+            require('electron').shell.openExternal('https://phresh-it.hu/apps/p2do/?appid=p2do');
+            break;
+          case 'phreshistant':
+            require('electron').shell.openExternal('https://phresh-it.hu/apps/phreshistant/?appid=p2do');
+            break;
+          case 'phreshit':
+            require('electron').shell.openExternal('https://phresh-it.hu/?appid=p2do');
+            break;
+          case 'electron':
+            require('electron').shell.openExternal('https://electronjs.org/?appid=p2do');
+            break;
+          case 'uikit':
+            require('electron').shell.openExternal('https://getuikit.com/?appid=p2do');
+            break;
+        }
+      }
+
+      const os = process.platform;
+      const electron = require('electron');
+      const {remote} = require('electron');
+      const {dialog} = require('electron').remote;
+      const app = electron.app || electron.remote.app;
+      const currentWindow = remote.getCurrentWindow();
+
+      const sysDocumentsFolder = app.getPath('documents');
+      const appPath = app.getPath('exe');
+
+      const path = require('path');
+      const fse = require('fs-extra');
+
+      const Store = require('electron-store');
+      const store = new Store();
+
+      const Datastore = require('nedb');
+
+      function toggelShowClock() {
+
+        let showclock = store.get('settings.showclock');
+        if (showclock) {
+          document.getElementById('dateTimeHolder').style.display = 'none';
+          document.getElementById('clock-menu-li').classList.remove('uk-active');
+          store.set('settings.showclock', false);
+        } else {
+          document.getElementById('dateTimeHolder').style.display = 'flex';
+          document.getElementById('clock-menu-li').classList.add('uk-active');
+          store.set('settings.showclock', true);
+        }
+
+      }
+      if (store.has('settings.showclock')) {
+        toggelShowClock();
+      } else {
+        document.getElementById('dateTimeHolder').style.display = 'flex';
+        document.getElementById('clock-menu-li').classList.add('uk-active');
+        store.set('settings.showclock', true);
+      }
+
+      function setLang(language) {
+        store.set('settings.language', language);
+        app.relaunch();
+        app.exit(0);
+      }
+      function getLang() {
+        let currLang = store.get('settings.language');
+        document.getElementById('language-' + currLang + '-menu-li').classList.add('uk-active');
+      }
+      getLang();
+
+      let AutoLaunch = require('auto-launch');
+      let p2DoAutoLauncher = new AutoLaunch({
+          name: 'p2Do',
+          path: appPath
+      });
+      if (store.has('settings.autolaunch')) {
+        let autolaunching = store.get('settings.autolaunch');
+        if (!autolaunching) {
+          document.getElementById('autostartapp-menu-li').classList.remove('uk-active');
+        } else {
+          document.getElementById('autostartapp-menu-li').classList.add('uk-active');
+        }
+      } else {
+        document.getElementById('autostartapp-menu-li').classList.remove('uk-active');
+        store.set('settings.autolaunch', false);
+      }
+
+      function autostartApp() {
+
+        let autolaunching = store.get('settings.autolaunch');
+        if (autolaunching) {
+          store.set('settings.autolaunch', false);
+          p2DoAutoLauncher.disable();
+          document.getElementById('autostartcheck').style.display = 'none';
+          document.getElementById('autostartapp-menu-li').classList.remove('uk-active');
+        } else {
+          store.set('settings.autolaunch', true);
+          p2DoAutoLauncher.enable();
+          document.getElementById('autostartcheck').style.display = 'inline-block';
+          document.getElementById('autostartapp-menu-li').classList.add('uk-active');
+
+          p2DoAutoLauncher.isEnabled()
+          .then(function(isEnabled) {
+            if(isEnabled) {
+              return;
+            }
+            p2DoAutoLauncher.enable();
+          })
+          .catch(function(err) {
+            console.log(err);
+          });
+        }
+
+      }
+
+      let workspacePath;
+
+      if (!store.has('settings.workspace')) {
+        UIkit.modal('#set-workspace-db-modal').show();
+        workspacePath = path.join(sysDocumentsFolder, 'p2DoDB');
+        document.getElementById('workspacePathInput').value = workspacePath;
+        document.getElementById('newWorkspacePathInput').value = workspacePath;
+      } else {
+        workspacePath = store.get('settings.workspace');
+        document.getElementById('workspacePathInput').value = workspacePath;
+        document.getElementById('newWorkspacePathInput').value = workspacePath;
+        fse.ensureDir(workspacePath, err => {
+          if (err) console.log(err);
+          loadDBs();
+        });
+      }
+
+      function createWorkspaceDialog() {
+
+        workspacePath = path.join(sysDocumentsFolder, 'p2DoDB');
+        setTimeout( function() {
+          workspacePath = dialog.showOpenDialog({properties: ['openDirectory']});
+          if (fse.existsSync(workspacePath.toString())) {
+            workspacePath = path.join(workspacePath.toString(), 'p2DoDB');
+            store.set('settings.workspace', workspacePath);
+            fse.ensureDir(workspacePath, err => {
+              if (err) alert(err);
+              loadDBs();
+              UIkit.modal('#set-workspace-db-modal').hide();
+            });
+          }
+        }, 500);
+
+      }
+
+      function editWorkspaceDialog() {
+
+        workspacePath = store.get('settings.workspace');
+        newWorkspacePath = workspacePath;
+        setTimeout( function() {
+          newWorkspacePath = dialog.showOpenDialog({properties: ['openDirectory']});
+          if (fse.existsSync(newWorkspacePath.toString())) {
+            newWorkspacePath = path.join(newWorkspacePath.toString(), 'p2DoDB');
+            fse.ensureDir(newWorkspacePath, err => {
+              if (err) alert(err);
+
+              try {
+                fse.copySync( path.join(workspacePath, 'todos.db'), path.join(newWorkspacePath, 'todos.db') );
+
+                store.set('settings.workspace_old', workspacePath);
+                store.set('settings.workspace', newWorkspacePath);
+                document.location.reload(true);
+
+              } catch (err2) {
+                alert(err2)
+              }
+
+            });
+          }
+        }, 500);
+
+      }
+
+      if (store.has('settings.workspace_old')) {
+        setTimeout( () => {
+          let oldWorkspacePath = store.get('settings.workspace_old');
+          fse.removeSync(path.join(oldWorkspacePath, 'todos.db'));
+          fse.removeSync(oldWorkspacePath);
+          store.delete('settings.workspace_old');
+        }, 2000);
+      }
+
+      /* import & export db */
+
+      function importDB() {
+
+        let dbZip = dialog.showOpenDialog({properties: ['openFile'],filters: [{name: 'Zip archives', extensions: ['zip']}]});
+        fse.createReadStream(dbZip.toString()).pipe(unzipper.Extract({ path: workspacePath }));
+        setTimeout( () => { document.location.href='' }, 1000);
+
+      }
+
+      function exportDB() {
+
+        dialog.showSaveDialog({defaultPath: 'P2DoDB.zip'}, (dbZip) => {
+
+          let projectsdbfile = path.join(workspacePath, 'todos.db');
+
+          let outputZip = fse.createWriteStream(dbZip);
+
+          let archive = archiver('zip', {
+            zlib: { level: 9 }
+          });
+
+          archive.pipe(outputZip);
+          archive.append(fse.createReadStream(projectsdbfile), { name: 'todos.db' });
+          archive.finalize();
+
+        });
+
+      }
+
+      function loadDBs() {
+
+        const todosPath = path.join(workspacePath, 'todos.db');
+        todosDB = new Datastore({ filename: todosPath, autoload: true });
+
+        p2DoJS = require(__dirname + '/assets/js/p2do.js');
+
+      }
+
+      function checkReminders() {
+
+        settedReminders.forEach( (r, i) => {
+
+          if (Date.now() >= r.time) {
+
+            settedReminders.splice(i, 1);
+
+            let todoIDsArr = [];
+            let todoUpdates = [];
+            let todoTexts = [];
+
+            if (r.todo.search(',') !== -1) {
+              todoIDsArr = r.todo.split(',');
+            } else {
+              todoIDsArr.push(r.todo);
+            }
+
+            alert(r.todo);
+            currentWindow.focus();
+            p2DoJS.resetTodoReminder(r.id);
+
+            setTimeout( () => {
+              document.getElementById('todo-tr-' + r.id).classList.add('uk-background-primary');
+              document.getElementById('todo-text-' + r.id).classList.add('uk-background-primary');
+              document.getElementById('todo-text-' + r.id).style.color="#fff";
+            }, 2000);
+
+          }
+
+        });
+
+      }
+
+      window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+          document.getElementById('scrollToTop').style.display = "inline-block";
+        } else {
+          document.getElementById('scrollToTop').style.display = "none";
+        }
+      };
+
+    </script>
+  </body>
+</html>

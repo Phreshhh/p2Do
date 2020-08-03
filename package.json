@@ -1,0 +1,80 @@
+{
+  "name": "p2do",
+  "version": "1.0.0",
+  "productName": "p2Do",
+  "description": "Very-very simple todo app.",
+  "author": "Phresh",
+  "copyright": "© 2020, Krisztián Kis - Phresh-IT",
+  "homepage": "https://phresh-it.hu/apps/p2do/",
+  "repository": "https://github.com/Phreshhh/p2do/",
+  "license": "MIT",
+  "keywords": [
+    "Phresh",
+    "Electron",
+    "uikit",
+    "todo"
+  ],
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack-win32": "electron-packager . p2Do --platform=win32 --arch=x32 --asar --out dist --overwrite --icon=build/icons/favicon.ico",
+    "pack-win": "electron-packager . p2Do --platform=win32 --arch=x64 --asar --out dist --overwrite --icon=build/icons/favicon.ico",
+    "pack-lin": "electron-packager . p2Do --platform=linux --arch=x64 --asar --out dist --overwrite ---icon=build/icons/android-icon-192x192.png --prune=true",
+    "pack-mac": "electron-packager . p2Do --platform=darwin --arch=x64 --asar --out dist  --overwrite --icon=build/icons/icon-512.icns --prune=true",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "dependencies": {
+    "archiver": "3.0.0",
+    "auto-launch": "5.0.5",
+    "electron-updater": "2.19.1",
+    "electron-store": "2.0.0",
+    "electron-window-state": "5.0.0",
+    "fs-extra": "7.0.0",
+    "nedb": "1.8.0",
+    "unzipper": "0.9.3"
+  },
+  "devDependencies": {
+    "electron": "4.0.0",
+    "electron-packager": "13.0.1",
+    "electron-builder": "20.38.4"
+  },
+  "build": {
+    "appId": "com.p2do",
+    "productName": "p2Do",
+    "copyright": "© 2020 Phresh-IT",
+    "asar": true,
+    "linux": {
+      "icon": "build/icons/",
+      "maintainer": "Krisztian Kis",
+      "synopsis": "Todo manager.",
+      "category": "Development",
+      "packageCategory": "devel",
+      "description": "Electron based todo manager.",
+      "target": [
+        "AppImage"
+      ]
+    },
+    "win": {
+      "icon": "build/icons/favicon.ico",
+      "publisherName": "Krisztian Kis",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": true,
+      "installerIcon": "build/icons/favicon.ico",
+      "createDesktopShortcut": true
+    },
+    "mac": {
+      "icon": "build/icons/icon-512.icns",
+      "category": "public.app-category.productivity",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    }
+  }
+}

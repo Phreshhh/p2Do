@@ -1,0 +1,36 @@
+{
+  "settings": "Settings",
+  "language": "Language",
+  "language_hu": "Magyar",
+  "language_en": "English",
+  "database": "Database",
+  "save_place": "Save path",
+  "import": "Import",
+  "export": "Export",
+  "start_with_system": "Start with system",
+  "date_and_time": "Date & time",
+  "info": "Info",
+  "save": "Save",
+  "saved": "Saved",
+  "cancel": "Cancel",
+  "close": "Close",
+  "total": "Total",
+
+  "add": "Add",
+  "update": "Update",
+  "edit": "Edit",
+  "delete": "Delete",
+  "deleted": "Deleted",
+  "finished": "Finished",
+  "file_not_saved": "File not saved",
+  "file_save_failed": "File save failed. Error: ",
+
+  "new_todo": "New todo",
+  "todos": "Todos",
+  "priority": "Priority",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High",
+  "reminder": "Reminder"
+
+}
