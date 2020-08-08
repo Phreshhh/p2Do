@@ -19,7 +19,11 @@ function createWindow () {
     'width': mainWindowState.width,
     'height': mainWindowState.height,
     title: 'p2Do',
-    icon: __dirname + '/build/icons/favicon.ico'
+    icon: __dirname + '/build/icons/favicon.ico',
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
   });
 
   mainWindowState.manage(mainWindow);

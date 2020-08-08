@@ -178,13 +178,7 @@ function saveTodo(todo, todoid) {
 
     if (todoid !== undefined && todoid !== null) {
 
-      todosDB.update({ _id: todoid }, {
-        _id: todoid,
-        _todo: todo,
-        _priority: 2,
-        _reminderDate: '',
-        _reminderTime: ''
-      }, { upsert: true }, function (err, numReplaced) {
+      todosDB.update({ _id: todoid }, { $set: { _todo: todo } }, function (err, numReplaced) {
 
       });
 
@@ -210,7 +204,9 @@ function saveTodo(todo, todoid) {
 
         newtodoArr.push(newtodoObj);
 
-        todosDB.insert(newtodoArr, function(err, docs) { });
+        todosDB.insert(newtodoArr, function(err, docs) {
+          setTimeout( () => { getTodos(); }, 1500);
+        });
 
       });
 

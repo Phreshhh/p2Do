@@ -213,8 +213,15 @@
         }
 
       }
+
       if (store.has('settings.showclock')) {
-        toggelShowClock();
+        if (store.get('settings.showclock')) {
+          document.getElementById('dateTimeHolder').style.display = 'flex';
+          document.getElementById('clock-menu-li').classList.add('uk-active');
+        } else {
+          document.getElementById('dateTimeHolder').style.display = 'none';
+          document.getElementById('clock-menu-li').classList.remove('uk-active');
+        }
       } else {
         document.getElementById('dateTimeHolder').style.display = 'flex';
         document.getElementById('clock-menu-li').classList.add('uk-active');
@@ -255,12 +262,10 @@
         if (autolaunching) {
           store.set('settings.autolaunch', false);
           p2DoAutoLauncher.disable();
-          document.getElementById('autostartcheck').style.display = 'none';
           document.getElementById('autostartapp-menu-li').classList.remove('uk-active');
         } else {
           store.set('settings.autolaunch', true);
           p2DoAutoLauncher.enable();
-          document.getElementById('autostartcheck').style.display = 'inline-block';
           document.getElementById('autostartapp-menu-li').classList.add('uk-active');
 
           p2DoAutoLauncher.isEnabled()
@@ -288,10 +293,8 @@
         workspacePath = store.get('settings.workspace');
         document.getElementById('workspacePathInput').value = workspacePath;
         document.getElementById('newWorkspacePathInput').value = workspacePath;
-        fse.ensureDir(workspacePath, err => {
-          if (err) console.log(err);
-          loadDBs();
-        });
+        fse.ensureDir(workspacePath, err => { if (err) console.log(err); });
+        loadDBs();
       }
 
       function createWorkspaceDialog() {
