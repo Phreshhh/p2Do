@@ -295,7 +295,16 @@ function saveFullTodo() {
 
       newtodoArr.push(newtodoObj);
 
-      todosDB.insert(newtodoArr, function(err, docs) { getTodos(); });
+      todosDB.insert(newtodoArr, function(err, docs) {
+
+        document.getElementById('add-new-todo-input').value = '';
+        document.getElementById('add-new-todo-priority').selectedIndex = 1;
+        document.getElementById('add-new-todo-reminder-date').value = '';
+        document.getElementById('add-new-todo-reminder-time').value = '';
+
+        getTodos();
+
+      });
 
     });
 
