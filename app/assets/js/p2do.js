@@ -11,6 +11,8 @@ module.exports = {
 
 function getTodos() {
 
+  settedReminders = []; // clear all reminder before fill its
+
   document.getElementById("todos-table-body").innerHTML = "";
 
   let iTRs = 0;
@@ -233,6 +235,7 @@ function deleteTodo(todoid) {
     todosDB.remove({ _id: todoid }, function(err, numDeleted) {
 
       document.getElementById('todo-tr-' + todoid).classList.add("uk-animation-scale-up", "uk-animation-reverse");
+
       setTimeout( () => { getTodos(); }, 500);
 
     });
